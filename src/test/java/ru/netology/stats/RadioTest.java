@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class RadioTest {
 
     @Test
-    void shouldSetValidStation() {
+    void shouldSetValidStations() {
         Radio radio = new Radio();
         radio.setCurrentStation(5);
         assertEquals(5, radio.getCurrentStation());
@@ -113,7 +113,6 @@ class RadioTest {
     }
 
 
-    
     @Test
     void shouldHandleMultipleVolumeIncreases() {
         Radio radio = new Radio();
