@@ -17,14 +17,14 @@ class RadioTest {
     void shouldNotSetStationBelowZero() {
         Radio radio = new Radio();
         radio.setCurrentStation(-1);
-        assertEquals(0, radio.getCurrentStation()); // должно остаться значение по умолчанию
+        assertEquals(0, radio.getCurrentStation());
     }
 
     @Test
     void shouldNotSetStationAboveNine() {
         Radio radio = new Radio();
         radio.setCurrentStation(10);
-        assertEquals(0, radio.getCurrentStation()); // должно остаться значение по умолчанию
+        assertEquals(0, radio.getCurrentStation());
     }
 
     @Test
@@ -70,14 +70,14 @@ class RadioTest {
     void shouldNotSetVolumeBelowZero() {
         Radio radio = new Radio();
         radio.setCurrentVolume(-1);
-        assertEquals(0, radio.getCurrentVolume()); // должно остаться значение по умолчанию
+        assertEquals(0, radio.getCurrentVolume());
     }
 
     @Test
     void shouldNotSetVolumeAboveHundred() {
         Radio radio = new Radio();
         radio.setCurrentVolume(101);
-        assertEquals(0, radio.getCurrentVolume()); // должно остаться значение по умолчанию
+        assertEquals(0, radio.getCurrentVolume());
     }
 
     @Test
