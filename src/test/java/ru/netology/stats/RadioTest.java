@@ -1,135 +1,136 @@
 package ru.netology.stats;
-
+import lombok.Getter;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
 
+@Getter
 class RadioTest {
+    private Radio defaultRadio;
+    private Radio customRadio;
+
+    @BeforeEach
+    void setUp() {
+        defaultRadio = new Radio();
+        customRadio = new Radio(15);
+    }
+
+    // ===== ТЕСТЫ ДЛЯ КОНСТРУКТОРА ПО УМОЛЧАНИЮ =====
 
     @Test
-    void shouldSetValidStations() {
-        Radio radio = new Radio();
-        radio.setCurrentStation(5);
-        assertEquals(5, radio.getCurrentStation());
+    void shouldCreateDefaultRadioWith10Stations() {
+        assertEquals(9, defaultRadio.getMaxStation());
+        assertEquals(0, defaultRadio.getCurrentStation());
+        assertEquals(0, defaultRadio.getCurrentVolume());
     }
 
     @Test
-    void shouldNotSetStationBelowZero() {
-        Radio radio = new Radio();
-        radio.setCurrentStation(-1);
-        assertEquals(0, radio.getCurrentStation());
+    void shouldSetValidStationForDefaultRadio() {
+        defaultRadio.setCurrentStation(5);
+        assertEquals(5, defaultRadio.getCurrentStation());
+    }
+    
+
+    @Test
+    void shouldSwitchFromMaxToZeroForDefaultRadio() {
+        defaultRadio.setCurrentStation(9);
+        defaultRadio.nextStation();
+        assertEquals(0, defaultRadio.getCurrentStation());
     }
 
     @Test
-    void shouldNotSetStationAboveNine() {
-        Radio radio = new Radio();
-        radio.setCurrentStation(10);
-        assertEquals(0, radio.getCurrentStation());
+    void shouldSwitchFromZeroToMaxForDefaultRadio() {
+        defaultRadio.setCurrentStation(0);
+        defaultRadio.prevStation();
+        assertEquals(9, defaultRadio.getCurrentStation());
+    }
+
+    // ===== ТЕСТЫ ДЛЯ КОНСТРУКТОРА С ПАРАМЕТРОМ =====
+
+    @Test
+    void shouldCreateRadioWithCustomStations() {
+        assertEquals(14, customRadio.getMaxStation());
     }
 
     @Test
-    void shouldSwitchToNextStation() {
-        Radio radio = new Radio();
-        radio.setCurrentStation(5);
-        radio.nextStation();
-        assertEquals(6, radio.getCurrentStation());
+    void shouldSetValidStationForCustomRadio() {
+        customRadio.setCurrentStation(10);
+        assertEquals(10, customRadio.getCurrentStation());
     }
 
     @Test
-    void shouldSwitchFromNineToZero() {
-        Radio radio = new Radio();
-        radio.setCurrentStation(9);
-        radio.nextStation();
-        assertEquals(0, radio.getCurrentStation());
+    void shouldSwitchFromMaxToZeroForCustomRadio() {
+        customRadio.setCurrentStation(14);
+        customRadio.nextStation();
+        assertEquals(0, customRadio.getCurrentStation());
     }
 
     @Test
-    void shouldSwitchToPrevStation() {
-        Radio radio = new Radio();
-        radio.setCurrentStation(5);
-        radio.prevStation();
-        assertEquals(4, radio.getCurrentStation());
+    void shouldSwitchFromZeroToMaxForCustomRadio() {
+        customRadio.setCurrentStation(0);
+        customRadio.prevStation();
+        assertEquals(14, customRadio.getCurrentStation());
     }
 
-    @Test
-    void shouldSwitchFromZeroToNine() {
-        Radio radio = new Radio();
-        radio.setCurrentStation(0);
-        radio.prevStation();
-        assertEquals(9, radio.getCurrentStation());
-    }
+    // ===== ТЕСТЫ ДЛЯ ГРОМКОСТИ =====
 
     @Test
     void shouldSetValidVolume() {
-        Radio radio = new Radio();
-        radio.setCurrentVolume(50);
-        assertEquals(50, radio.getCurrentVolume());
+        defaultRadio.setCurrentVolume(50);
+        assertEquals(50, defaultRadio.getCurrentVolume());
     }
 
-    @Test
-    void shouldNotSetVolumeBelowZero() {
-        Radio radio = new Radio();
-        radio.setCurrentVolume(-1);
-        assertEquals(0, radio.getCurrentVolume());
-    }
-
-    @Test
-    void shouldNotSetVolumeAboveHundred() {
-        Radio radio = new Radio();
-        radio.setCurrentVolume(101);
-        assertEquals(0, radio.getCurrentVolume());
-    }
 
     @Test
     void shouldIncreaseVolume() {
-        Radio radio = new Radio();
-        radio.setCurrentVolume(50);
-        radio.increaseVolume();
-        assertEquals(51, radio.getCurrentVolume());
+        defaultRadio.setCurrentVolume(50);
+        defaultRadio.increaseVolume();
+        assertEquals(51, defaultRadio.getCurrentVolume());
     }
 
     @Test
     void shouldNotIncreaseVolumeAboveMax() {
-        Radio radio = new Radio();
-        radio.setCurrentVolume(100);
-        radio.increaseVolume();
-        assertEquals(100, radio.getCurrentVolume());
+        defaultRadio.setCurrentVolume(100);
+        defaultRadio.increaseVolume();
+        assertEquals(100, defaultRadio.getCurrentVolume());
     }
 
     @Test
     void shouldDecreaseVolume() {
-        Radio radio = new Radio();
-        radio.setCurrentVolume(50);
-        radio.decreaseVolume();
-        assertEquals(49, radio.getCurrentVolume());
+        defaultRadio.setCurrentVolume(50);
+        defaultRadio.decreaseVolume();
+        assertEquals(49, defaultRadio.getCurrentVolume());
     }
 
     @Test
     void shouldNotDecreaseVolumeBelowMin() {
-        Radio radio = new Radio();
-        radio.setCurrentVolume(0);
-        radio.decreaseVolume();
-        assertEquals(0, radio.getCurrentVolume());
+        defaultRadio.setCurrentVolume(0);
+        defaultRadio.decreaseVolume();
+        assertEquals(0, defaultRadio.getCurrentVolume());
     }
 
+    // ===== ДОПОЛНИТЕЛЬНЫЕ ТЕСТЫ =====
 
     @Test
-    void shouldHandleMultipleVolumeIncreases() {
-        Radio radio = new Radio();
-        radio.setCurrentVolume(98);
-        radio.increaseVolume();
-        radio.increaseVolume();
-        radio.increaseVolume(); // это не должно увеличить выше 100
-        assertEquals(100, radio.getCurrentVolume());
+    void shouldHandleInvalidStationCount() {
+        Radio invalidRadio = new Radio(-5);
+        assertEquals(9, invalidRadio.getMaxStation());
     }
 
     @Test
-    void shouldHandleMultipleStationChanges() {
-        Radio radio = new Radio();
-        radio.setCurrentStation(8);
-        radio.nextStation();
-        radio.nextStation(); // должно перейти с 9 на 0
-        radio.nextStation();
-        assertEquals(1, radio.getCurrentStation());
+    void shouldHandleSingleStation() {
+        Radio singleStationRadio = new Radio(1);
+        assertEquals(0, singleStationRadio.getMaxStation());
+        singleStationRadio.setCurrentStation(0);
+        assertEquals(0, singleStationRadio.getCurrentStation());
+    }
+
+    @Test
+    void shouldHandleVolumeBoundaries() {
+        defaultRadio.setCurrentVolume(0);
+        assertEquals(0, defaultRadio.getCurrentVolume());
+
+        defaultRadio.setCurrentVolume(100);
+        assertEquals(100, defaultRadio.getCurrentVolume());
     }
 }

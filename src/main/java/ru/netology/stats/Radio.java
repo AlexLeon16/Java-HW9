@@ -1,32 +1,32 @@
 package ru.netology.stats;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
 public class Radio {
+    @Setter
     private int currentStation;
+
+    @Setter
     private int currentVolume;
 
+    private final int maxStation;
 
-    public int getCurrentStation() {
-        return currentStation;
+    public Radio() {
+        this.maxStation = 9;
     }
 
-    public void setCurrentStation(int newStation) {
-        if (newStation >= 0 && newStation <= 9) {
-            currentStation = newStation;
-        }
-    }
-
-    public int getCurrentVolume() {
-        return currentVolume;
-    }
-
-    public void setCurrentVolume(int newVolume) {
-        if (newVolume >= 0 && newVolume <= 100) {
-            currentVolume = newVolume;
+    public Radio(int stationCount) {
+        if (stationCount <= 0) {
+            this.maxStation = 9;
+        } else {
+            this.maxStation = stationCount - 1;
         }
     }
 
     public void nextStation() {
-        if (currentStation == 9) {
+        if (currentStation == maxStation) {
             currentStation = 0;
         } else {
             currentStation++;
@@ -35,7 +35,7 @@ public class Radio {
 
     public void prevStation() {
         if (currentStation == 0) {
-            currentStation = 9;
+            currentStation = maxStation;
         } else {
             currentStation--;
         }
